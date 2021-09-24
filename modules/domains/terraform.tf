@@ -14,9 +14,9 @@ terraform {
 }
 
 provider "kubernetes" {
-  cluster_ca_certificate = base64decode(var.kube_config.cluster_ca_certificate)
-  host                   = var.kube_config.host
-  token                  = var.kube_config.token
+  cluster_ca_certificate = base64decode(var.k8s_conf.cluster_ca_certificate)
+  host                   = var.k8s_conf.host
+  token                  = var.k8s_conf.token
 
   experiments {
     manifest_resource = true

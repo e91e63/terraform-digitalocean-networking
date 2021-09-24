@@ -1,13 +1,13 @@
 data "digitalocean_loadbalancer" "main" {
-  name = "${var.project_name}-k8s-load-balancer"
+  name = "${var.project_conf.name}-k8s-load-balancer"
 }
 
 data "digitalocean_project" "main" {
-  name = var.project_name
+  name = var.project_conf.name
 }
 
 resource "digitalocean_domain" "main" {
-  name       = var.domain_name
+  name       = var.project_conf.domain_name
   ip_address = data.digitalocean_loadbalancer.main.ip
 }
 
@@ -18,19 +18,19 @@ resource "digitalocean_project_resources" "main" {
   ]
 }
 
-resource "kubernetes_manifest" "main" {
+resource "kubernetes_manifest" "ambassador_host" {
   manifest = {
     "apiVersion" = "getambassador.io/v2"
     "kind"       = "Host"
     "metadata" = {
-      "name"      = "${var.domain_name}"
+      "name"      = "${var.project_conf.domain_name}"
       "namespace" = "default"
     }
     "spec" = {
       "acmeProvider" = {
-        "email" = var.acme.email
+        "email" = var.acme_conf.email
       }
-      "hostname" = var.domain_name
+      "hostname" = var.project_conf.domain_name
     }
   }
 }

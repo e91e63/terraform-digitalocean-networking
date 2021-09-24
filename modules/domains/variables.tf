@@ -1,18 +1,17 @@
-variable "acme" {
+variable "acme_conf" {
   type = object({
     email = string
   })
 }
 
-variable "domain_name" {
-  type = string
+variable "project_conf" {
+  type = object({
+    domain_name = string
+    name        = string
+  })
 }
 
-variable "project_name" {
-  type = string
-}
-
-variable "kube_config" {
+variable "k8s_conf" {
   type = object({
     cluster_ca_certificate = string,
     host                   = string,
