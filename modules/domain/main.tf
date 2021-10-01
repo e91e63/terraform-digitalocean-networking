@@ -7,8 +7,15 @@ data "digitalocean_project" "main" {
 }
 
 resource "digitalocean_domain" "main" {
-  name       = var.project_conf.domain_name
-  ip_address = data.digitalocean_loadbalancer.main.ip
+  name = var.project_conf.domain_name
+}
+
+resource "digitalocean_record" "main" {
+  domain = digitalocean_domain.main.name
+  name   = "@"
+  ttl    = 30
+  type   = "A"
+  value  = data.digitalocean_loadbalancer.main.ip
 }
 
 resource "digitalocean_project_resources" "main" {
@@ -19,18 +26,20 @@ resource "digitalocean_project_resources" "main" {
 }
 
 resource "kubernetes_manifest" "ambassador_host" {
+  field_manager { force_conflicts = true }
   manifest = {
-    "apiVersion" = "getambassador.io/v2"
-    "kind"       = "Host"
-    "metadata" = {
-      "name"      = "${var.project_conf.domain_name}"
-      "namespace" = "default"
+    apiVersion = "getambassador.io/v2"
+    kind       = "Host"
+    metadata = {
+      name      = "${var.project_conf.domain_name}"
+      namespace = "default"
     }
-    "spec" = {
-      "acmeProvider" = {
-        "email" = var.acme_conf.email
+    spec = {
+      acmeProvider = {
+        authority = "https://acme-staging-v02.api.letsencrypt.org/directory"
+        email     = var.acme_conf.email
       }
-      "hostname" = var.project_conf.domain_name
+      hostname = var.project_conf.domain_name
     }
   }
 }
