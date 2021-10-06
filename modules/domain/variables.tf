@@ -1,6 +1,14 @@
-variable "acme_conf" {
+variable "k8s_conf" {
   type = object({
-    email = string
+    cluster_ca_certificate = string,
+    host                   = string,
+    token                  = string,
+  })
+}
+
+variable "load_balancer_info" {
+  type = object({
+    ip = string
   })
 }
 

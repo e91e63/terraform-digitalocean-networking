@@ -1,8 +1,3 @@
-# TODO: Get from loadbalancer
-data "digitalocean_loadbalancer" "main" {
-  name = "${var.project_conf.name}-load-balancer"
-}
-
 data "digitalocean_project" "main" {
   name = var.project_conf.name
 }
@@ -16,7 +11,7 @@ resource "digitalocean_record" "root" {
   name   = "@"
   ttl    = 30
   type   = "A"
-  value  = data.digitalocean_loadbalancer.main.ip
+  value  = var.load_balancer_info.ip
 }
 
 resource "digitalocean_record" "star" {
@@ -32,4 +27,26 @@ resource "digitalocean_project_resources" "main" {
   resources = [
     digitalocean_domain.main.urn
   ]
+}
+
+resource "kubernetes_manifest" "cert_manager_certificate" {
+  manifest = {
+    apiVersion = "cert-manager.io/v1"
+    kind       = "Certificate"
+    metadata = {
+      name      = digitalocean_record.root.fqdn
+      namespace = "default"
+    }
+    spec = {
+      dnsNames = [
+        digitalocean_record.root.fqdn,
+        digitalocean_record.star.fqdn,
+      ]
+      issuerRef = {
+        name = "digitalocean"
+        kind = "ClusterIssuer"
+      }
+      secretName = "${digitalocean_record.root.fqdn}-cert"
+    }
+  }
 }
