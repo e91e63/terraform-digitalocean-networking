@@ -1,4 +1,4 @@
-variable "k8s_conf" {
+variable "k8s_info" {
   type = object({
     cluster_ca_certificate = string,
     host                   = string,
