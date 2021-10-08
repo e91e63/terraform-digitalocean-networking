@@ -1,3 +1,5 @@
 output "info" {
-  value = digitalocean_loadbalancer.main
+  value = {
+    ip = digitalocean_loadbalancer.main.ip
+  }
 }
