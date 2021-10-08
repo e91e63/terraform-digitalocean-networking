@@ -1,16 +1,6 @@
 variable "cert_issuer_conf" {
-  type = object({
-    email                 = string
-    personal_access_token = string
-  })
-}
-
-variable "k8s_info" {
-  type = object({
-    cluster_ca_certificate = string,
-    host                   = string,
-    token                  = string,
-  })
+  default = {}
+  type    = optional(any)
 }
 
 variable "load_balancer_info" {
