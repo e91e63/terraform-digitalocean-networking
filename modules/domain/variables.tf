@@ -1,6 +1,10 @@
-variable "cert_issuer_conf" {
-  default = {}
-  type    = any
+variable "cert_issuer_info" {
+  type = object({
+    ref = object({
+      name = string
+      kind = string
+    })
+  })
 }
 
 variable "load_balancer_info" {

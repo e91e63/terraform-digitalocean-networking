@@ -6,13 +6,6 @@ resource "digitalocean_domain" "main" {
   name = var.project_conf.domain_name
 }
 
-module "cert-issuer" {
-  count  = var.cert_issuer_conf != {} ? 1 : 0
-  source = "../cert-issuer"
-
-  cert_issuer_conf = var.cert_issuer_conf
-}
-
 resource "digitalocean_record" "root" {
   domain = digitalocean_domain.main.name
   name   = "@"
@@ -49,10 +42,7 @@ resource "kubernetes_manifest" "cert_manager_certificate" {
         digitalocean_record.root.fqdn,
         digitalocean_record.star.fqdn,
       ]
-      issuerRef = {
-        name = "digitalocean"
-        kind = "ClusterIssuer"
-      }
+      issuerRef  = var.cert_issuer_info.ref
       secretName = "${digitalocean_record.root.fqdn}-cert"
     }
   }
