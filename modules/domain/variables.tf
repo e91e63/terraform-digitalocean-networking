@@ -7,15 +7,20 @@ variable "cert_issuer_info" {
   })
 }
 
+domain_conf = {
+  type = object({
+    name = string
+  })
+}
+
 variable "load_balancer_info" {
   type = object({
     ip = string
   })
 }
 
-variable "project_conf" {
+variable "project_info" {
   type = object({
-    domain_name = string
-    name        = string
+    name = string
   })
 }

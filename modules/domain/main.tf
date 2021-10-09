@@ -1,9 +1,9 @@
 data "digitalocean_project" "main" {
-  name = var.project_conf.name
+  name = var.project_info.name
 }
 
 resource "digitalocean_domain" "main" {
-  name = var.project_conf.domain_name
+  name = var.domain_conf.name
 }
 
 resource "digitalocean_record" "root" {
