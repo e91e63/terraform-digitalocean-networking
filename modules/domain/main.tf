@@ -7,7 +7,7 @@ resource "digitalocean_domain" "main" {
 }
 
 module "cert-issuer" {
-  count  = var.cert_issuer_conf != null ? 1 : 0
+  count  = var.cert_issuer_conf != {} ? 1 : 0
   source = "../cert-issuer"
 
   cert_issuer_conf = var.cert_issuer_conf

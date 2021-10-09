@@ -1,6 +1,6 @@
 variable "cert_issuer_conf" {
   default = {}
-  type    = optional(any)
+  type    = any
 }
 
 variable "load_balancer_info" {
