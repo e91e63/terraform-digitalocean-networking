@@ -7,7 +7,7 @@ variable "cert_issuer_info" {
   })
 }
 
-domain_conf = {
+variable "domain_conf" {
   type = object({
     name = string
   })

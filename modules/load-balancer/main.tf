@@ -1,29 +1,20 @@
-data "digitalocean_project" "main" {
-  name = var.project_conf.name
-}
-
-data "digitalocean_vpc" "main" {
-  name = "${var.project_conf.name}-k8s-cluster"
-}
-
 resource "digitalocean_loadbalancer" "main" {
-  droplet_tag = "${var.project_conf.name}-k8s-worker"
-  name        = "${var.project_conf.name}-load-balancer"
-  region      = var.project_conf.region
-  vpc_uuid    = data.digitalocean_vpc.main.id
+  droplet_tag = var.load_balancer_conf.droplet_tag
+  name        = "${var.project_info.name}-load-balancer"
+  region      = var.load_balancer_conf.region
+  vpc_uuid    = var.load_balancer_conf.vpc_id
 
-  # TODO: pull these from nodeport config
   forwarding_rule {
     entry_port      = 80
     entry_protocol  = "http"
-    target_port     = 32080
+    target_port     = var.load_balancer_conf.http_target_port
     target_protocol = "http"
   }
 
   forwarding_rule {
     entry_port      = 443
     entry_protocol  = "https"
-    target_port     = 32443
+    target_port     = var.load_balancer_conf.https_target_port
     target_protocol = "https"
     tls_passthrough = true
   }
@@ -35,7 +26,7 @@ resource "digitalocean_loadbalancer" "main" {
 }
 
 resource "digitalocean_project_resources" "main" {
-  project = data.digitalocean_project.main.id
+  project = var.project_info.id
   resources = [
     digitalocean_loadbalancer.main.urn
   ]
