@@ -2,6 +2,7 @@ resource "digitalocean_loadbalancer" "main" {
   droplet_tag = var.load_balancer_conf.droplet_tag
   name        = "${var.project_info.name}-load-balancer"
   region      = var.load_balancer_conf.region
+  size        = var.load_balancer_conf.size
   vpc_uuid    = var.load_balancer_conf.vpc_id
 
   forwarding_rule {
