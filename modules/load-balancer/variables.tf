@@ -1,11 +1,11 @@
 variable "load_balancer_conf" {
   type = object({
-    droplet_tag                      = string
-    http_target_port                 = string
-    https_target_port                = string
-    region                           = string
-    size                             = string
-    vpc_id                           = string
+    droplet_tag       = string
+    http_target_port  = string
+    https_target_port = string
+    region            = string
+    size              = string
+    vpc_id            = string
   })
 }
 
