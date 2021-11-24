@@ -1,3 +1,13 @@
+terraform {
+  required_providers {
+    digitalocean = {
+      source  = "digitalocean/digitalocean"
+      version = "~> 2"
+    }
+  }
+  required_version = "~> 1"
+}
+
 resource "digitalocean_loadbalancer" "main" {
   droplet_tag = var.load_balancer_conf.droplet_tag
   name        = "${var.project_info.name}-load-balancer"
@@ -31,14 +41,4 @@ resource "digitalocean_project_resources" "main" {
   resources = [
     digitalocean_loadbalancer.main.urn
   ]
-}
-
-terraform {
-  required_providers {
-    digitalocean = {
-      source  = "digitalocean/digitalocean"
-      version = "~> 2"
-    }
-  }
-  required_version = "~> 1"
 }

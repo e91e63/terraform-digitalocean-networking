@@ -1,3 +1,17 @@
+terraform {
+  required_providers {
+    digitalocean = {
+      source  = "digitalocean/digitalocean"
+      version = "~> 2"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2"
+    }
+  }
+  required_version = "~> 1"
+}
+
 data "digitalocean_project" "main" {
   name = var.project_info.name
 }
@@ -46,18 +60,4 @@ resource "kubernetes_manifest" "cert_manager_certificate" {
       secretName = "${digitalocean_record.root.fqdn}-cert"
     }
   }
-}
-
-terraform {
-  required_providers {
-    digitalocean = {
-      source  = "digitalocean/digitalocean"
-      version = "~> 2"
-    }
-    kubernetes = {
-      source  = "hashicorp/kubernetes"
-      version = "~> 2"
-    }
-  }
-  required_version = "~> 1"
 }
