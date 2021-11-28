@@ -21,6 +21,6 @@ variable "load_balancer_info" {
 
 variable "project_info" {
   type = object({
-    name = string
+    id = string
   })
 }

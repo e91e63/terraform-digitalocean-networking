@@ -12,10 +12,6 @@ terraform {
   required_version = "~> 1"
 }
 
-data "digitalocean_project" "main" {
-  name = var.project_info.name
-}
-
 resource "digitalocean_domain" "main" {
   name = var.domain_conf.name
 }
@@ -37,7 +33,7 @@ resource "digitalocean_record" "star" {
 }
 
 resource "digitalocean_project_resources" "main" {
-  project = data.digitalocean_project.main.id
+  project = var.project_info.id
   resources = [
     digitalocean_domain.main.urn
   ]
